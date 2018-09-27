@@ -35,45 +35,47 @@ public class Control extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String origin = request.getParameter("origin");
+        System.out.println(origin);
         try {
             DataMapper dm = new DataMapper();
             if (origin != null) {
                 switch (origin) {
                     case "login":
-                        String loginHidden = request.getParameter("loginFormCheck");
-                        String registerHidden = request.getParameter("registerFormCheck");
-                        if (loginHidden.equals("LoginForm")) {
-                            String username = request.getParameter("username");
-                            String password = request.getParameter("psw");
-                            User user = dm.authenticateLogin(username, password);
-
-                            if (user != null) {
-                                request.getSession().setAttribute("user", user);
-                                response.sendRedirect("Home");
-                            } else {
-                                request.setAttribute("error", "Unknown user, please try again");
-                                request.getRequestDispatcher("/Login.jsp").forward(request, response);
-                            }
-                            request.setAttribute("error", "Login not yet made");
-                            request.getRequestDispatcher("error.jsp").forward(request, response);
-                            break;
-                        } else if (registerHidden.equals("RegisterForm")) {
-                            String username = request.getParameter("username");
-                            String password = request.getParameter("psw");
-                            String mail = request.getParameter("mail");
-                            boolean createUserResult = dm.createUser(username, password, mail);
-
-                            if (createUserResult == true) {
-                                response.sendRedirect("Login");
-                            } else {
-                                request.setAttribute("error", "Something went wrong, please try again");
-                            }
+                        String usernameLogin = request.getParameter("usernameLogin");
+                        String passwordLogin = request.getParameter("passwordLogin");
+                        User user = dm.authenticateLogin(usernameLogin, passwordLogin);
+                        
+                        if (user != null) {
+                            request.getSession().setAttribute("user", user);
+                            System.out.println(request.getSession().getAttribute(user.getUsername()));
+                            response.sendRedirect("Home");
+                        } else {
+                            request.setAttribute("error", "Unknown user, please try again");
+                            System.out.println(request.getAttribute("error"));
+                            request.getRequestDispatcher("login_and_register.jsp").forward(request, response);
                         }
+                        break;
+                    case "register":
+                        String usernameReg = request.getParameter("usernameRegister");
+                        String passwordReg = request.getParameter("passwordRegister");
+                        String emailReg = request.getParameter("email");
+                        boolean createUserResult = dm.createUser(usernameReg, passwordReg, emailReg);
 
+                        if (createUserResult == true) {
+                            request.setAttribute("CreateSucced", "Your account has been made");
+                            System.out.println(request.getAttribute("CreateSucced"));
+                            response.sendRedirect("login_and_register");
+                        } else {
+                            request.setAttribute("error", "Something went wrong, please try again");
+                            System.out.println(request.getAttribute("error"));
+                            response.sendRedirect("login_and_register");
+                        }
+                        break;
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
+            System.out.println("Check stacktrace error");
         }
     }
 
