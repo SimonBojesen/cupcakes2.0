@@ -20,4 +20,10 @@ public class CupCake {
     public double getPrice(){
        return this.bottom.getBprice() + this.topping.getTprice();   
     }
+
+    @Override
+    public String toString() {
+        return bottom.getBname()+ " with " + topping.getTname();
+    }
+    
 }

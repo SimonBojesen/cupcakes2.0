@@ -16,4 +16,9 @@ public class Topping {
         this.tname = tname;
         this.tprice = tprice;
     }
+
+    @Override
+    public String toString() {
+        return "Topping{" + "tname=" + tname + ", tprice=" + tprice + '}';
+    }
 }

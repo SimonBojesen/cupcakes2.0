@@ -8,11 +8,17 @@ package presentation;
 import data.DataMapper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logic.entity.Bottom;
+import logic.entity.CupCake;
+import logic.entity.OrderLine;
+import logic.entity.Topping;
 import logic.entity.User;
 
 /**
@@ -46,6 +52,13 @@ public class Control extends HttpServlet {
                     case "register":
                         caseRegister(request, dm, response);
                         break;
+                    case "shoppingcart":
+                        System.out.println("shopping-----------");
+                        caseShoppingcart(request, dm, response);
+                        break;
+                    case "checkout":
+                        
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -54,12 +67,32 @@ public class Control extends HttpServlet {
         }
     }
 
+    private void caseShoppingcart(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws IOException, ServletException, NumberFormatException {
+        List<OrderLine> ol = null;
+        if (request.getSession().getAttribute("shoppingcart") == null) {
+            ol = new ArrayList();
+            System.out.println("session not found");
+            request.getSession().setAttribute("shoppingcart", ol);
+        } else {
+            System.out.println("session found");
+            ol = (List<OrderLine>) request.getSession().getAttribute("shoppingcart");
+        }
+        System.out.println("getting information");
+        Topping top = dm.getToppings().get(Integer.parseInt(request.getParameter("topping")));
+        Bottom bot = dm.getBottoms().get(Integer.parseInt(request.getParameter("bottom")));
+        int qty = Integer.parseInt(request.getParameter("qty"));
+        double total = qty * (top.getTprice() + bot.getBprice());
+        ol.add(new OrderLine(new CupCake(bot, top), total, qty));
+        System.out.println("added information");
+        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
+    }
+ 
     private void caseRegister(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws IOException {
         String usernameReg = request.getParameter("usernameRegister");
         String passwordReg = request.getParameter("passwordRegister");
         String emailReg = request.getParameter("email");
         boolean createUserResult = dm.createUser(usernameReg, passwordReg, emailReg);
-        
+
         if (createUserResult == true) {
             request.setAttribute("CreateSucced", "Your account has been made");
             System.out.println(request.getAttribute("CreateSucced"));
@@ -75,7 +108,7 @@ public class Control extends HttpServlet {
         String usernameLogin = request.getParameter("usernameLogin");
         String passwordLogin = request.getParameter("passwordLogin");
         User user = dm.authenticateLogin(usernameLogin, passwordLogin);
-        
+
         if (user != null) {
             request.getSession().setAttribute("user", user);
             request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);

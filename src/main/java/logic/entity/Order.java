@@ -1,9 +1,13 @@
 package logic.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Order {
     int orderId, userId;
     boolean isPaid;
     String orderDate;
+    List<OrderLine> allOrders = new ArrayList();
 
     public Order(int orderId, int userId, boolean isPaid, String orderDate) {
         this.orderId = orderId;
@@ -14,6 +18,10 @@ public class Order {
 
     public int getOrderId() {
         return orderId;
+    }
+
+    public List<OrderLine> getAllOrders() {
+        return allOrders;
     }
 
     public int getUserId() {

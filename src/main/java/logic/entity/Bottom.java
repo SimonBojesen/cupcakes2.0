@@ -17,4 +17,9 @@ public class Bottom {
         this.bname = bname;
         this.bprice = bprice;
     }
+
+    @Override
+    public String toString() {
+        return "Bottom{" + "bname=" + bname + ", bprice=" + bprice + '}';
+    }
 }
