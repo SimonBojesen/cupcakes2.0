@@ -59,6 +59,9 @@ public class Control extends HttpServlet {
                     case "checkout":
                         
                         break;
+                    case "invoice":
+                        request.getRequestDispatcher("veiwInvoices.jsp").forward(request, response);
+                        break;
                 }
             }
         } catch (Exception e) {

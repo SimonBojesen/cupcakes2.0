@@ -21,7 +21,14 @@
             <img src="https://pro2-bar-s3-cdn-cf4.myportfolio.com/cacac6b6e47e6135f27164e74f70129f/fdb8086e-2ac9-484f-accf-c1c7dd0663ff_rw_1920.png?h=f139fe80413c5335535f23a6d5091b62" alt=""/>
             <h3>Welcome</h3>
             <p>Order the most delicious cupcakes right here!</p>
-            <input type="submit" name="" value="Previouse Invoices"/><br/>
+
+            <div>
+                <from id="veiwInvoices" action="Control" method="post">
+                    <input type="hidden" name="origin" value="invoice">
+                    <input type="submit" value="Previouse Invoices"/><br/>
+                </from>
+            </div>
+
         </div>
         <div class="col-md-9 register-right">
             <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
