@@ -104,19 +104,24 @@ public class DataMapper {
     //Denne funktion tager imod username og password strenge når en person prøver at logge ind. 
     //Den sammenligner så med dataen i vores users table i databasen, og returner til sidst et User Objekt.
     public User authenticateLogin(String username, String password) {
+        int dbId;
+        double dbBalance;
         String query;
-        String dbUsername, dbPassword;
+        String dbUsername, dbPassword, dbEmail;
         User user;
         try {
             Connection c = new DBConnector().getConnection();
             Statement stmt = c.createStatement();
-            query = "SELECT username, password FROM users;";
+            query = "SELECT * FROM users;";
             ResultSet res = stmt.executeQuery(query);
             while (res.next()) {
+                dbId = Integer.parseInt(res.getString("userid"));
                 dbUsername = res.getString("username");
                 dbPassword = res.getString("password");
+                dbBalance = Double.parseDouble(res.getString("balance"));
+                dbEmail = res.getString("email");
                 if (dbUsername.equals(username) && dbPassword.equals(password)) {
-                    user = new User(username, password);
+                    user = new User(dbId, username, password, dbEmail, dbBalance);
                     return user;
                 }
             }
@@ -142,6 +147,17 @@ public class DataMapper {
         }
         return false;
     }
-    
-    
+    public void updateBalance(double newBalance, User user){
+        try {
+            Connection c = new DBConnector().getConnection();
+            Statement stmt = c.createStatement();
+            String query = "UPDATE Users "
+                    + "SET balance = '" + newBalance +"' "
+                    + "WHERE userid = " + user.getUserid() + ";";
+            stmt.executeUpdate(query);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Error");
+        }
+    }
 }

@@ -58,14 +58,23 @@ public class Control extends HttpServlet {
                         caseShoppingcart(request, dm, response);
                         break;
                     case "checkout":
-                        
+
                         break;
 
                     case "invoices":
                         System.out.println("invoice buttom--------------");
-                        List < Order > orders = dm.getPreviouseInvoices();
+                        List< Order> orders = dm.getPreviouseInvoices();
                         request.setAttribute("orders", orders);
                         request.getRequestDispatcher("veiwInvoices.jsp").forward(request, response);
+                        break;
+                    case "balanceIncrease":
+                        User user = (User) request.getSession().getAttribute("user");
+                        double currentBalance = user.getBalance();
+                        double increaseAmount = Double.parseDouble(request.getParameter("amountIncrease"));
+                        double newBalance = currentBalance + increaseAmount;
+                        dm.updateBalance(newBalance, user);
+                        user.setBalance(newBalance);
+                        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
                         break;
                 }
             }
@@ -116,7 +125,7 @@ public class Control extends HttpServlet {
         String usernameLogin = request.getParameter("usernameLogin");
         String passwordLogin = request.getParameter("passwordLogin");
         User user = dm.authenticateLogin(usernameLogin, passwordLogin);
-
+        
         if (user != null) {
             request.getSession().setAttribute("user", user);
             request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);

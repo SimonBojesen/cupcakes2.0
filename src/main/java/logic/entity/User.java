@@ -25,9 +25,8 @@ private double balance;
         return balance;
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public User(int userid, String username, String password, String email, double balance) {
