@@ -68,20 +68,32 @@ public class Control extends HttpServlet {
                         request.getRequestDispatcher("veiwInvoices.jsp").forward(request, response);
                         break;
                     case "balanceIncrease":
-                        User user = (User) request.getSession().getAttribute("user");
-                        double currentBalance = user.getBalance();
-                        double increaseAmount = Double.parseDouble(request.getParameter("amountIncrease"));
-                        double newBalance = currentBalance + increaseAmount;
-                        dm.updateBalance(newBalance, user);
-                        user.setBalance(newBalance);
-                        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
+                        caseBalanceincrease(request, dm, response);
                         break;
+                    case "clearCart":
+                        caseClearcart(request, response);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Check stacktrace error");
         }
+    }
+
+    private void caseClearcart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        List<OrderLine> ol = (ArrayList) request.getSession().getAttribute("shoppingcart");
+        ol.clear();
+        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
+    }
+
+    private void caseBalanceincrease(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws IOException, NumberFormatException, ServletException {
+        User user = (User) request.getSession().getAttribute("user");
+        double currentBalance = user.getBalance();
+        double increaseAmount = Double.parseDouble(request.getParameter("amountIncrease"));
+        double newBalance = currentBalance + increaseAmount;
+        dm.updateBalance(newBalance, user);
+        user.setBalance(newBalance);
+        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
     }
 
     private void caseShoppingcart(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws IOException, ServletException, NumberFormatException {
