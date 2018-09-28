@@ -6,14 +6,12 @@ import java.util.List;
 public class Order {
     int orderId, userId;
     boolean isPaid;
-    String orderDate;
     List<OrderLine> allOrders = new ArrayList();
 
-    public Order(int orderId, int userId, boolean isPaid, String orderDate) {
+    public Order(int orderId, int userId, boolean isPaid) {
         this.orderId = orderId;
         this.userId = userId;
         this.isPaid = isPaid;
-        this.orderDate = orderDate;
     }
 
     public int getOrderId() {
@@ -32,7 +30,4 @@ public class Order {
         return isPaid;
     }
 
-    public String getOrderDate() {
-        return orderDate;
-    }
 }

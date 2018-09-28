@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logic.entity.Bottom;
 import logic.entity.CupCake;
+import logic.entity.Order;
 import logic.entity.OrderLine;
 import logic.entity.Topping;
 import logic.entity.User;
@@ -59,7 +60,11 @@ public class Control extends HttpServlet {
                     case "checkout":
                         
                         break;
-                    case "invoice":
+
+                    case "invoices":
+                        System.out.println("invoice buttom--------------");
+                        List < Order > orders = dm.getPreviouseInvoices();
+                        request.setAttribute("orders", orders);
                         request.getRequestDispatcher("veiwInvoices.jsp").forward(request, response);
                         break;
                 }
@@ -89,7 +94,7 @@ public class Control extends HttpServlet {
         System.out.println("added information");
         request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
     }
- 
+
     private void caseRegister(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws IOException {
         String usernameReg = request.getParameter("usernameRegister");
         String passwordReg = request.getParameter("passwordRegister");

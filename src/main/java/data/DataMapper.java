@@ -80,7 +80,7 @@ public class DataMapper {
         return null;
     }
 
-    public List<Order> getPreviouseInvoices(int orderId, int userId, boolean isPaid, String orderDate) {
+    public List<Order> getPreviouseInvoices() {
         ArrayList<Order> oArray = new ArrayList();
         try {
             Connection c = new DBConnector().getConnection();
@@ -90,7 +90,7 @@ public class DataMapper {
                     + "FROM orders;";
             ResultSet res = stmt.executeQuery(query);
             while (res.next()) {
-                Order o = new Order(res.getInt("orderid"), res.getInt("userid"), res.getBoolean("ispaid"), res.getString(orderDate));
+                Order o = new Order(res.getInt("orderid"), res.getInt("userid"), res.getBoolean("ispaid"));
                 oArray.add(o);
             }
             return oArray;
