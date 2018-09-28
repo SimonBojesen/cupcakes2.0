@@ -74,24 +74,25 @@
                                 </div>
                             </form>
                         </div>
+
                         <div class="col-md-10 register-bottom">
-                            <% List<OrderLine> ol = (List<OrderLine>) request.getSession().getAttribute("shoppingcart");  %>
-                            <ul class="list-group list-group-flush">
+                            <form id="checkout" action="Control" method="post">
+                                <% List<OrderLine> ol = (List<OrderLine>) request.getSession().getAttribute("shoppingcart");  %>
+                                <ul class="list-group list-group-flush">
 
-                                <%
-                                    if (ol != null) {
-                                        for (int i = 0; i < ol.size(); i++) {
-                                            out.print("<li class=\"list-group-item\">Cupcake: " + ol.get(i).getCupcake() + "<br> Quantity: " + ol.get(i).getQty() + "<br> Total price: " + ol.get(i).getTotalPrice() + "</li>");
+                                    <%
+                                        if (ol != null) {
+                                            for (int i = 0; i < ol.size(); i++) {
+                                                out.print("<li class=\"list-group-item\">Cupcake: " + ol.get(i).getCupcake() + "<br> Quantity: " + ol.get(i).getQty() + "<br> Total price: " + ol.get(i).getTotalPrice() + "</li>");
+                                            }
+                                    %>  <div class="form-group">
+                                        <input type="hidden" name="origin" value="checkout">
+                                        <input type="submit" class="btnFinishOrder"  value="Check out"/>
+                                    </div> <%
                                         }
-                                %>  <div class="form-group">
-                                    <input type="hidden" name="origin" value="checkout">
-                                    <input type="submit" class="btnFinishOrder"  value="Check out"/>
-                                </div> <%
-                                    }
-                                %>
-
-
-                            </ul>  
+                                    %>
+                                </ul> 
+                            </form>
                         </div>
                     </div>
                 </div>
