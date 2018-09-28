@@ -1,3 +1,4 @@
+<%@page import="logic.entity.User"%>
 <%@page import="logic.entity.OrderLine"%>
 <%@page import="java.util.List"%>
 <%@page import="data.DataMapper"%>
@@ -24,21 +25,26 @@
 
             <div>
                 <from id="veiwInvoices" action="Control" method="post">
-                    <input type="hidden" name="origin" value="invoice">
+                    <input type="hidden" name="origin" value="invoices">
                     <input type="submit" value="Previouse Invoices"/><br/>
                 </from>
             </div>
 
         </div>
         <div class="col-md-9 register-right">
-            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Pick Up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Delivery</a>
-                </li>
-            </ul>
+            <form action="Control" method="post">
+                <input type="hidden" name="origin" value="balanceIncrease">
+                <%
+                    if (request.getSession().getAttribute("user") != null) {
+                        User user = (User) request.getSession().getAttribute("user"); %>
+                        <input type="text" placeholder="Enter amount" name="amountIncrease">
+                        <input type="submit" value="IncreaseBalance">
+                        <label>Logged in as: <b><% out.print(user.getUsername()); %></b></label>
+                        <label>Account balance: <b><% out.print(user.getBalance()); %></b></label>
+                        <%
+                    }
+                %>
+            </form>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <h3 class="register-heading">Choose bottom and topping</h3>
@@ -48,8 +54,7 @@
                                 <div class="form-group">
                                     <select name="bottom" class="form-control">
                                         <option class="hidden"  selected disabled>Please select your Bottom</option>
-                                        <%
-                                            for (int i = 0; i < dm.getBottoms().size(); i++) {
+                                        <%                                            for (int i = 0; i < dm.getBottoms().size(); i++) {
                                                 out.println("<option value=" + i + ">" + dm.getBottoms().get(i).getBname() + " " + dm.getBottoms().get(i).getBprice() + "</option>");
                                             }
                                         %>
@@ -70,7 +75,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="hidden" name="origin" value="shoppingcart">
-                                    <input type="submit" class="btnAddToCard"  value="Add to cart"/>
+                                    <input type="submit" class="btnAddToCard"  value="Add to cart" style="margin-bottom: 20px">
                                 </div>
                             </form>
                         </div>
@@ -86,14 +91,14 @@
                                             out.print("<li class=\"list-group-item\">Cupcake: " + ol.get(i).getCupcake() + "<br> Quantity: " + ol.get(i).getQty() + "<br> Total price: " + ol.get(i).getTotalPrice() + "</li>");
                                         }
                                 %> 
-                                <div>
-                                    <form id="remove" action="Control" method="post">
-                                        <input type="hidden" name="origin" value="checkout">
-                                        <input type="submit" class="btnFinishOrder"  value="Check out"/>
+                                <div class="form-group" style="float:left;">
+                                    <form id="remove" action="Control" method="post" >
+                                        <input type="hidden" name="origin" value="clearCart">
+                                        <input type="submit" class="btnFinishOrder"  value="Clear shoppingcart"/>
                                     </form>
                                 </div>
-                                <div class="form-group">
-                                    <form id="checkout" action="Control" method="post">
+                                <div class="form-group" style="float:left;">
+                                    <form id="checkout" action="Control" method="post" >
                                         <input type="hidden" name="origin" value="checkout">
                                         <input type="submit" class="btnFinishOrder"  value="Check out"/>
                                     </form>
