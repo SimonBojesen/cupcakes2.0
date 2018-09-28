@@ -76,23 +76,32 @@
                         </div>
 
                         <div class="col-md-10 register-bottom">
-                            <form id="checkout" action="Control" method="post">
-                                <% List<OrderLine> ol = (List<OrderLine>) request.getSession().getAttribute("shoppingcart");  %>
-                                <ul class="list-group list-group-flush">
 
-                                    <%
-                                        if (ol != null) {
-                                            for (int i = 0; i < ol.size(); i++) {
-                                                out.print("<li class=\"list-group-item\">Cupcake: " + ol.get(i).getCupcake() + "<br> Quantity: " + ol.get(i).getQty() + "<br> Total price: " + ol.get(i).getTotalPrice() + "</li>");
-                                            }
-                                    %>  <div class="form-group">
+                            <% List<OrderLine> ol = (List<OrderLine>) request.getSession().getAttribute("shoppingcart");  %>
+                            <ul class="list-group list-group-flush">
+
+                                <%
+                                    if (ol != null) {
+                                        for (int i = 0; i < ol.size(); i++) {
+                                            out.print("<li class=\"list-group-item\">Cupcake: " + ol.get(i).getCupcake() + "<br> Quantity: " + ol.get(i).getQty() + "<br> Total price: " + ol.get(i).getTotalPrice() + "</li>");
+                                        }
+                                %> 
+                                <div>
+                                    <form id="remove" action="Control" method="post">
                                         <input type="hidden" name="origin" value="checkout">
                                         <input type="submit" class="btnFinishOrder"  value="Check out"/>
-                                    </div> <%
-                                        }
-                                    %>
-                                </ul> 
-                            </form>
+                                    </form>
+                                </div>
+                                <div class="form-group">
+                                    <form id="checkout" action="Control" method="post">
+                                        <input type="hidden" name="origin" value="checkout">
+                                        <input type="submit" class="btnFinishOrder"  value="Check out"/>
+                                    </form>
+                                </div> 
+                                <%
+                                    }
+                                %>
+                            </ul> 
                         </div>
                     </div>
                 </div>
