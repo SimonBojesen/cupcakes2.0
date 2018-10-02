@@ -1,3 +1,5 @@
+<%@page import="logic.entity.Bottom"%>
+<%@page import="logic.entity.Topping"%>
 <%@page import="logic.entity.User"%>
 <%@page import="logic.entity.OrderLine"%>
 <%@page import="java.util.List"%>
@@ -37,11 +39,11 @@
                 <%
                     if (request.getSession().getAttribute("user") != null) {
                         User user = (User) request.getSession().getAttribute("user"); %>
-                        <input type="text" placeholder="Enter amount" name="amountIncrease">
-                        <input type="submit" value="IncreaseBalance">
-                        <label>Logged in as: <b><% out.print(user.getUsername()); %></b></label>
-                        <label>Account balance: <b><% out.print(user.getBalance()); %></b></label>
-                        <%
+                <input type="text" placeholder="Enter amount" name="amountIncrease">
+                <input type="submit" value="IncreaseBalance">
+                <label>Logged in as: <b><% out.print(user.getUsername()); %></b></label>
+                <label>Account balance: <b><% out.print(user.getBalance()); %></b></label>
+                <%
                     }
                 %>
             </form>
@@ -54,8 +56,9 @@
                                 <div class="form-group">
                                     <select name="bottom" class="form-control">
                                         <option class="hidden"  selected disabled>Please select your Bottom</option>
-                                        <%                                            for (int i = 0; i < dm.getBottoms().size(); i++) {
-                                                out.println("<option value=" + i + ">" + dm.getBottoms().get(i).getBname() + " " + dm.getBottoms().get(i).getBprice() + "</option>");
+                                        <%  List<Bottom> lb = dm.getBottoms();   
+                                            for (int i = 0; i < lb.size(); i++) {
+                                                out.println("<option value=" + i + ">" + lb.get(i).getBname() + " " + lb.get(i).getBprice() + "</option>");
                                             }
                                         %>
                                     </select>
@@ -63,9 +66,9 @@
                                 <div class="form-group">
                                     <select name="topping" class="form-control">
                                         <option class="hidden"  selected disabled>Please select your Topping</option>
-                                        <%
-                                            for (int i = 0; i < dm.getToppings().size(); i++) {
-                                                out.println("<option value=" + i + ">" + dm.getToppings().get(i).getTname() + " " + dm.getToppings().get(i).getTprice() + "</option>");
+                                        <%  List<Topping> l = dm.getToppings();
+                                            for (int i = 0; i < l.size(); i++) {
+                                                out.println("<option value=" + i + ">" + l.get(i).getTname() + " " + l.get(i).getTprice() + "</option>");
                                             }
                                         %>
                                     </select>

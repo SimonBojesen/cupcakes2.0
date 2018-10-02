@@ -4,6 +4,8 @@
     Author     : Bruger
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="logic.entity.OrderLine"%>
 <%@page import="logic.entity.Order"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -15,15 +17,18 @@
     <body>
         <input type="hidden" name ="origin" value="">
         <div>
-            <% Order or = (Order) request.getAttribute("information"); %>
+            <%   
+                Order or = (Order) request.getAttribute("information");
+                List<OrderLine> l = or.getAllOrders();
+            %>
 
             <h3>List of Invoices </h3>
             <ul class="list-group list-group-flush">
 
-                <%
-                    for (int i = 0; i < or.getAllOrders().size(); i++) {
-                        out.print("<li class=\"list-group-item\">" + "Cupcake: " + or.getAllOrders().get(i).getCupcake()
-                                + " qty of cupcake: " + or.getAllOrders().get(i).getQty() + " total price: " + or.getAllOrders().get(i).getTotalPrice() + "</li>");
+                <% 
+                    for (int i = 0; i < l.size(); i++) {
+                        out.print("<li class=\"list-group-item\">" + "Cupcake: " + l.get(i).getCupcake()
+                                + " qty of cupcake: " + l.get(i).getQty() + " total price: " + l.get(i).getTotalPrice() + "</li>");
                     }
                 %>
             </ul>  

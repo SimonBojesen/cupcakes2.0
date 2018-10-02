@@ -10,10 +10,10 @@ public class DBConnector {
 	private static Connection connection = null;
 	
 	//Constants
-	private static final String IP	     = "localhost";
+	private static final String IP	     = "188.166.16.16";
 	private static final String PORT     = "3306";
 	public static final String DATABASE = "cupcakeshop";
-	private static final String USERNAME = "root"; 
+	private static final String USERNAME = "testuser"; 
 	private static final String PASSWORD = "1234";	     
 	
 	public static Connection getConnection() {
