@@ -58,23 +58,7 @@ public class Control extends HttpServlet {
                         caseShoppingcart(request, dm, response);
                         break;
                     case "checkout":
-                        List<OrderLine> ol = (ArrayList) request.getSession().getAttribute("shoppingcart");
-                        User user = (User) request.getSession().getAttribute("user");
-                        double totalprice = 0;
-                        boolean ispaid = false;
-                        for (int i = 0; i < ol.size(); i++) {
-                            totalprice += ol.get(i).getTotalPrice();
-                        }
-                        
-                        if (user.getBalance() > totalprice) {
-                            double newBalance = user.getBalance() - totalprice;
-                            ispaid = true;
-                        }
-                        
-                        Order order = new Order(user.getUserid(), ispaid);
-//                        dm.checkOutOrder(order, user);
-                        ol.clear();
-                        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
+                        caseCheckOut(request, response);
                         break;
 
                     case "invoices":
@@ -94,6 +78,26 @@ public class Control extends HttpServlet {
             e.printStackTrace();
             System.out.println("Check stacktrace error");
         }
+    }
+
+    private void caseCheckOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<OrderLine> ol = (ArrayList) request.getSession().getAttribute("shoppingcart");
+        User user = (User) request.getSession().getAttribute("user");
+        double totalprice = 0;
+        boolean ispaid = false;
+        for (int i = 0; i < ol.size(); i++) {
+            totalprice += ol.get(i).getTotalPrice();
+        }
+        
+        if (user.getBalance() > totalprice) {
+            double newBalance = user.getBalance() - totalprice;
+            ispaid = true;
+        }
+        
+        Order order = new Order(user.getUserid(), ispaid);
+//                        dm.checkOutOrder(order, user);
+ol.clear();
+request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
     }
 
     private void caseClearcart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
