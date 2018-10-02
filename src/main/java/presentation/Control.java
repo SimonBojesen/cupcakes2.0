@@ -58,12 +58,28 @@ public class Control extends HttpServlet {
                         caseShoppingcart(request, dm, response);
                         break;
                     case "checkout":
-
+                        List<OrderLine> ol = (ArrayList) request.getSession().getAttribute("shoppingcart");
+                        User user = (User) request.getSession().getAttribute("user");
+                        double totalprice = 0;
+                        boolean ispaid = false;
+                        for (int i = 0; i < ol.size(); i++) {
+                            totalprice += ol.get(i).getTotalPrice();
+                        }
+                        
+                        if (user.getBalance() > totalprice) {
+                            double newBalance = user.getBalance() - totalprice;
+                            ispaid = true;
+                        }
+                        
+                        Order order = new Order(user.getUserid(), ispaid);
+//                        dm.checkOutOrder(order, user);
+                        ol.clear();
+                        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
                         break;
 
                     case "invoices":
                         System.out.println("invoice buttom--------------");
-                        List< Order> orders = dm.getPreviouseInvoices();
+                        List<Order> orders = dm.getPreviouseInvoices();
                         request.setAttribute("orders", orders);
                         request.getRequestDispatcher("veiwInvoices.jsp").forward(request, response);
                         break;

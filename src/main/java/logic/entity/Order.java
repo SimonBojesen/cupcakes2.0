@@ -6,10 +6,10 @@ import java.util.List;
 public class Order {
     int orderId, userId;
     boolean isPaid;
+    
     List<OrderLine> allOrders = new ArrayList();
 
-    public Order(int orderId, int userId, boolean isPaid) {
-        this.orderId = orderId;
+    public Order(int userId, boolean isPaid) {
         this.userId = userId;
         this.isPaid = isPaid;
     }

@@ -35,7 +35,7 @@
         <ul class="list-group list-group-flush">
             <%
                 for (int i = 0; i < orders.size(); i++) {
-                    out.print("<a href=\"Control?origin=singleInvoice=" + orders.get(i).getOrderId() + "<li class=\"list-group-item\">" + "Invoice nr:" + count + " userId: " + orders.get(i).getUserId() + "is piad: " + orders.get(i).isIsPaid() + "</li></a>");
+                    out.print("<a href=\"Control?origin=singleInvoice&InvoiceId=" + orders.get(i).getOrderId() + "<li class=\"list-group-item\">" + "Invoice nr:" + count + " userId: " + orders.get(i).getUserId() + "is paid: " + orders.get(i).isIsPaid() + "</li></a>");
                     count++;
                 }
             %>

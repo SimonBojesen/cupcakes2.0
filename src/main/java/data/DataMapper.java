@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import logic.entity.Bottom;
 import logic.entity.Order;
@@ -20,6 +21,7 @@ import logic.entity.User;
  * @author Simon
  */
 public class DataMapper {
+
     public ArrayList<Topping> getToppings() {
         ArrayList<Topping> l = new ArrayList();
         try {
@@ -29,7 +31,7 @@ public class DataMapper {
                     = "SELECT `tname`,`tprice` "
                     + "FROM `toppings`;";
             ResultSet res = stmt.executeQuery(query);
-            while(res.next()) {
+            while (res.next()) {
                 Topping tp = new Topping(res.getString("tname"), res.getDouble("tprice"));
                 l.add(tp);
             }
@@ -40,7 +42,7 @@ public class DataMapper {
         }
         return null;
     }
-    
+
     public ArrayList<Bottom> getBottoms() {
         ArrayList<Bottom> b = new ArrayList();
         try {
@@ -61,6 +63,7 @@ public class DataMapper {
         }
         return null;
     }
+
     public User getUser(String type) {
         try {
             Connection c = new DBConnector().getConnection();
@@ -80,18 +83,18 @@ public class DataMapper {
         return null;
     }
 
-    public List<Order> getPreviouseInvoices() {
+    public ArrayList<Order> getPreviouseInvoices() {
         ArrayList<Order> oArray = new ArrayList();
         try {
             Connection c = new DBConnector().getConnection();
             Statement stmt = c.createStatement();
             String query
-                    = "SELECT *\n"
+                    = "SELECT * "
                     + "FROM orders;";
             ResultSet res = stmt.executeQuery(query);
             while (res.next()) {
-                Order o = new Order(res.getInt("orderid"), res.getInt("userid"), res.getBoolean("ispaid"));
-                oArray.add(o);
+                //Order o = new Order(res.getInt("orderid"), res.getInt("userid"), res.getBoolean("ispaid"));
+                //oArray.add(o);
             }
             return oArray;
         } catch (Exception ex) {
@@ -147,12 +150,14 @@ public class DataMapper {
         }
         return false;
     }
-    public void updateBalance(double newBalance, User user){
+
+    public void updateBalance(double newBalance, User user) {
         try {
-            Connection c = new DBConnector().getConnection();
+            
+            Connection c = DBConnector.getConnection();
             Statement stmt = c.createStatement();
             String query = "UPDATE Users "
-                    + "SET balance = '" + newBalance +"' "
+                    + "SET balance = '" + newBalance + "' "
                     + "WHERE userid = " + user.getUserid() + ";";
             stmt.executeUpdate(query);
         } catch (Exception ex) {
@@ -160,4 +165,19 @@ public class DataMapper {
             System.out.println("Error");
         }
     }
+
+//    public void checkOutOrder(Order order, User user) {
+//        try {
+//            Connection c = new DBConnector().getConnection();
+//            Statement stmt = c.createStatement();
+//            Date d = new Date();
+//            String query = "INSERT INTO Orders "
+//                    + "VALUES (null, " + user.getUserid() + ", " + order.isIsPaid() +", " + d + ");";
+//            int res = stmt.execute(query);
+//            //TODO Husk indsæt OrderLines!!! 
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            System.out.println("Error");
+//        }
+//    }
 }
