@@ -16,14 +16,15 @@ import logic.entity.Order;
 import logic.entity.Topping;
 import logic.entity.User;
 
-/**
- *
- * @author Simon
- */
-public class DataMapper {
 
+public class DataMapper {
+/**
+ * Denne methode finder connectionen til den tilhørende database Laver query som henter 
+ * alle informationerne for toppings tablet, og returnere name og price.
+ * @return  topping
+ */
     public ArrayList<Topping> getToppings() {
-        ArrayList<Topping> l = new ArrayList();
+        ArrayList<Topping> topping = new ArrayList();
         try {
             Connection c = new DBConnector().getConnection();
             Statement stmt = c.createStatement();
@@ -33,18 +34,23 @@ public class DataMapper {
             ResultSet res = stmt.executeQuery(query);
             while (res.next()) {
                 Topping tp = new Topping(res.getString("tname"), res.getDouble("tprice"));
-                l.add(tp);
+                topping.add(tp);
             }
-            return l;
+            return topping;
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("Error");
         }
         return null;
     }
-
+/**
+ * Denne methode finder connectionen til den tilhørende database Laver en query som henter 
+ * alle informationerne for bottoms tablet, og returnere name og price
+ * 
+ * @return bottom
+ */
     public ArrayList<Bottom> getBottoms() {
-        ArrayList<Bottom> b = new ArrayList();
+        ArrayList<Bottom> bottom = new ArrayList();
         try {
             Connection c = new DBConnector().getConnection();
             Statement stmt = c.createStatement();
@@ -54,9 +60,9 @@ public class DataMapper {
             ResultSet res = stmt.executeQuery(query);
             while (res.next()) {
                 Bottom bt = new Bottom(res.getString("bname"), res.getDouble("bprice"));
-                b.add(bt);
+                bottom.add(bt);
             }
-            return b;
+            return bottom;
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("Error");
@@ -104,8 +110,13 @@ public class DataMapper {
         return null;
     }
 
-    //Denne funktion tager imod username og password strenge når en person prøver at logge ind. 
-    //Den sammenligner så med dataen i vores users table i databasen, og returner til sidst et User Objekt.
+    /**
+     * Denne funktion tager imod username og password strenge når en person prøver at logge ind
+     * Den sammenligner så med dataen i vores users table i databasen, og returner til sidst et User Objekt
+     * @param username Users username
+     * @param password Users password
+     * @return User
+     */
     public User authenticateLogin(String username, String password) {
         int dbId;
         double dbBalance;
@@ -135,7 +146,14 @@ public class DataMapper {
         return null;
     }
 
-    //Denne funktion tager imod parametre og prøver at indsætte ny bruger i databasen. Hvis det lykkedes returnere den true.
+    
+    /**
+     * Denne funktion tager imod parametre og prøver at indsætte ny bruger i databasen Hvis det lykkedes returnere den true
+     * @param username New username
+     * @param password New password
+     * @param email New email
+     * @return True hvis bruger bliver oprettet, false hvis mislykkes
+     */
     public boolean createUser(String username, String password, String email) {
         try {
             Connection c = new DBConnector().getConnection();
@@ -150,7 +168,14 @@ public class DataMapper {
         }
         return false;
     }
-
+/**
+ * Denne methode tager imod parameterne newBalance som er den nye balance for den user som er logget in på 
+ * den kørende sessionen User parametere bruges til at få users på den kørende session og sammenligner users
+ * id med DB for at få hans specifikke balance
+ * 
+ * @param newBalance Nye balance for user
+ * @param user Session user
+ */
     public void updateBalance(double newBalance, User user) {
         try {
             
@@ -165,7 +190,13 @@ public class DataMapper {
             System.out.println("Error");
         }
     }
-
+///**
+// * Denne methode tager imod et order object som bliver indsæt i databasen med de tilhørende orderlines knytter til
+// * order objevtet Userernes id bliver tilknytter på order samt om bestilling er betalt, og tidspunktet orderne
+// * er færdig gjordt
+// * @param order Fulde ordre med orderlines
+// * @param user Users 
+// */
 //    public void checkOutOrder(Order order, User user) {
 //        try {
 //            Connection c = new DBConnector().getConnection();
@@ -174,7 +205,7 @@ public class DataMapper {
 //            String query = "INSERT INTO Orders "
 //                    + "VALUES (null, " + user.getUserid() + ", " + order.isIsPaid() +", " + d + ");";
 //            int res = stmt.execute(query);
-//            //TODO Husk indsæt OrderLines!!! 
+//            TODO Husk indsæt OrderLines!!! 
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
 //            System.out.println("Error");

@@ -1,0 +1,24 @@
+-classpath
+'C:/Users/Bruger/.m2/repository/javax/javaee-web-api/7.0/javaee-web-api-7.0.jar;C:/Users/Bruger/.m2/repository/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/Users/Bruger/Desktop/cupcakes2.0/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2018. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Bruger/Desktop/cupcakes2.0/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'cupcakes2.0 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/7/docs/api' 'C:/Users/Bruger/Desktop/cupcakes2.0/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'cupcakes2.0 1.0-SNAPSHOT API'

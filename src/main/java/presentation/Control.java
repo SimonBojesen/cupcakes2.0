@@ -24,7 +24,7 @@ import logic.entity.User;
 
 /**
  *
- * @author Simon
+ * @author Magnus, Rasmus, Mathias, Simon
  */
 @WebServlet(name = "Control", urlPatterns = {"/Control"})
 public class Control extends HttpServlet {
@@ -58,7 +58,7 @@ public class Control extends HttpServlet {
                         caseShoppingcart(request, dm, response);
                         break;
                     case "checkout":
-                        caseCheckOut(request, response);
+                        caseCheckOut(request, dm, response);
                         break;
 
                     case "invoices":
@@ -80,7 +80,20 @@ public class Control extends HttpServlet {
         }
     }
 
-    private void caseCheckOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+     * Denne methode henter informationerne for de to kørende sesssions
+     * shoppingcart & user Finder user's totale pris for sessionen Den total
+     * pris bliver sammenlignet med user's balance og trukket fra balance Hvis
+     * balancen er mindre end totalprice, bliver isPaid flase og sendt med til
+     * DB ArrayListen bliver cleared og man bliver redirect til home siden igen
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @param dm DataMapper
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void caseCheckOut(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws ServletException, IOException {
         List<OrderLine> ol = (ArrayList) request.getSession().getAttribute("shoppingcart");
         User user = (User) request.getSession().getAttribute("user");
         double totalprice = 0;
@@ -88,16 +101,16 @@ public class Control extends HttpServlet {
         for (int i = 0; i < ol.size(); i++) {
             totalprice += ol.get(i).getTotalPrice();
         }
-        
+
         if (user.getBalance() > totalprice) {
             double newBalance = user.getBalance() - totalprice;
             ispaid = true;
         }
-        
+
         Order order = new Order(user.getUserid(), ispaid);
 //                        dm.checkOutOrder(order, user);
-ol.clear();
-request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
+        ol.clear();
+        request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
     }
 
     private void caseClearcart(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -116,7 +129,21 @@ request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
         request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
     }
 
-    private void caseShoppingcart(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws IOException, ServletException, NumberFormatException {
+    /**
+     * Denne methode checker om der er en eksisterende shoppingcart session
+     * igang Hvis session er null og ikke eksisterende oprettets en ny
+     * shoppingcart session Eftet check bliver top og bottom prices fundet i DB
+     * via dm.getToppings/Bottoms hvorefter en ny orderLine bliver oprettet og
+     * sendt med i den updatet session
+     *
+     * @param request servlet request
+     * @param dm DataMapper
+     * @param response servlet response
+     * @throws IOException
+     * @throws ServletException
+     * @throws NumberFormatException
+     */
+    public void caseShoppingcart(HttpServletRequest request, DataMapper dm, HttpServletResponse response) throws IOException, ServletException, NumberFormatException {
         List<OrderLine> ol = null;
         if (request.getSession().getAttribute("shoppingcart") == null) {
             ol = new ArrayList();
@@ -157,7 +184,7 @@ request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
         String usernameLogin = request.getParameter("usernameLogin");
         String passwordLogin = request.getParameter("passwordLogin");
         User user = dm.authenticateLogin(usernameLogin, passwordLogin);
-        
+
         if (user != null) {
             request.getSession().setAttribute("user", user);
             request.getRequestDispatcher("cupcakehome.jsp").forward(request, response);
