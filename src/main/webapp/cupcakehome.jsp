@@ -11,7 +11,7 @@
 <%-- 
     Document   : cupcakeide
     Created on : 26-09-2018, 23:57:12
-    Author     : Rasmu
+    Author     : Rasmus
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -28,7 +28,7 @@
             <div>
                 <from id="veiwInvoices" action="Control" method="post">
                     <input type="hidden" name="origin" value="invoices">
-                    <input type="submit" value="Previouse Invoices"/><br/>
+                    <input type="submit" value="Previous Invoices"/><br/>
                 </from>
             </div>
 
